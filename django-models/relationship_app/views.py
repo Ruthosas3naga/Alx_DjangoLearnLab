@@ -9,7 +9,7 @@ def list_books(request):
 
 from .models import Library
 from django.views.generic.detail import DetailView
-from .views import list_books
+
 
 class SpecificLibrary(DetailView):
     model = Library
