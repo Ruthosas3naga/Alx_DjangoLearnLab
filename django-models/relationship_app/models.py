@@ -19,3 +19,20 @@ class Librarian(models.Model):
     library = models.OneToOneField(Library, on_delete=models.CASCADE)
 
 # Create your models here.
+from django.db import models
+from django.contrib.auth.models import User
+
+class UserProfile(models.Model):
+    # Define role choices
+    ROLE_CHOICES = [
+        ('Admin', 'Admin'),
+        ('Librarian', 'Librarian'),
+        ('Member', 'Member'),
+    ]
+    
+    # Link to the User model
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Member')
+    
+    def __str__(self):
+        return f'{self.user.username} - {self.role}'
