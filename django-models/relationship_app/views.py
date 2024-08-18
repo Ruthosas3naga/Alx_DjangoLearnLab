@@ -7,9 +7,7 @@ def list_books(request):
     context = {'books': books}  
     return render(request, 'relationship_app/list_books.html', context)
 
-
-#Create a class-based view in relationship_app/views.py that displays details for a specific library, listing all books available in that library.
-#Utilize Django’s ListView or DetailView to structure this class-based view.
+from .models import Library
 
 class SpecificLibrary(DetailView):
     model = Library
