@@ -27,10 +27,15 @@ urlpatterns = [
 ]
 
 from django.urls import path
-from .views import admin_view, librarian_view, member_view
+from .views import admin_view, librarian_view, member_view, add_book_view, edit_book_view, delete_book_view
 
 urlpatterns = [
     path('admin/', admin_view, name='admin_view'),
     path('librarian/', librarian_view, name='librarian_view'),
     path('member/', member_view, name='member_view'),
+    path('add/', add_book_view, name='add_book_view'),
+    path('edit/', edit_book_view, name='edit_book_view'),
+    path('delete/', delete_book_view, name='delete_book_view')
 ]
+
+
