@@ -26,7 +26,7 @@ urlpatterns = [
     path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
 ]
 
-from django.urls import path, include
+from django.urls import path
 from .views import admin_view, librarian_view, member_view
 
 urlpatterns = [
