@@ -2,10 +2,10 @@ from django.shortcuts import render
 from django.views.generic import DetailView
 from .models import Author, Book, Librarian, Library
 
-def book_list(request):
+def list_books(request):
     books = Book.objects.all()
     context = {'books': books}  
-    return render(request, 'relationship_app/book_list.html', context)
+    return render(request, 'relationship_app/list_books.html', context)
 
 
 #Create a class-based view in relationship_app/views.py that displays details for a specific library, listing all books available in that library.
