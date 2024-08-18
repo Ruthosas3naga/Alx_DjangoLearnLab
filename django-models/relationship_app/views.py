@@ -51,16 +51,28 @@ def register(request):
 
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
-from .models import UserProfile
 
-def is_admin(user):
-    return UserProfile.objects.filter(user=user, role='Admin').exists()
+def admin_check(user):
+    return user.userprofile.role == 'Admin'
 
-def is_librarian(user):
-    return UserProfile.objects.filter(user=user, role='Librarian').exists()
+def librarian_check(user):
+    return user.userprofile.role == 'Librarian'
 
-def is_member(user):
-    return UserProfile.objects.filter(user=user, role='Member').exists()
+def member_check(user):
+    return user.userprofile.role == 'Member'
+
+@user_passes_test(admin_check)
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html')
+
+@user_passes_test(librarian_check)
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian_view.html')
+
+@user_passes_test(member_check)
+def member_view(request):
+    return render(request, 'relationship_app/member_view.html')
+
 
 
 
