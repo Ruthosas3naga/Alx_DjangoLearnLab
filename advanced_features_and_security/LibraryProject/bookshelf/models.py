@@ -17,6 +17,19 @@ class CustomUser(AbstractUser):
   
     def __str__(self):
         return self.username
+    
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        permissions = [
+            ("can_view","Can view post"),
+            ("can_create", "Can create post"), 
+            ("can_edit", "Can edit post"), 
+            ("can_delete", "Can delete post")
+        ]
 
 
 # Custom User Manager
@@ -60,3 +73,4 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+

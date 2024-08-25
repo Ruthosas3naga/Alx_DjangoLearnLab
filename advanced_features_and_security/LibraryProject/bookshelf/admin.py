@@ -54,3 +54,22 @@ class CustomUserAdmin(BaseUserAdmin):
 # Register the custom user admin
 admin.site.register(CustomUser, CustomUserAdmin)
 
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
+from bookshelf.models import Post  # replace 'myapp' with your actual app name
+
+# Get or create groups
+editors_group, created = Group.objects.get_or_create(name='Editors')
+viewers_group, created = Group.objects.get_or_create(name='Viewers')
+admins_group, created = Group.objects.get_or_create(name='Admins')
+
+# Get permissions
+can_view_post = Permission.objects.get(codename='can_view_post')
+can_create_post = Permission.objects.get(codename='can_create_post')
+can_edit_post = Permission.objects.get(codename='can_edit_post')
+can_delete_post = Permission.objects.get(codename='can_delete_post')
+
+# Assign permissions to groups
+editors_group.permissions.add(can_view_post, can_create_post, can_edit_post)
+viewers_group.permissions.add(can_view_post)
+admins_group.permissions.add(can_view_post, can_create_post, can_edit_post, can_delete_post)
