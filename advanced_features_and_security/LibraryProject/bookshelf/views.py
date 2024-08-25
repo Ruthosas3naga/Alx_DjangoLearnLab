@@ -34,3 +34,9 @@ def delete_post(request, post_id):
         return redirect('post_list')
     return render(request, 'delete_post.html', {'post': post})
 
+from django.shortcuts import render
+from .models import Book
+
+def book_list(request):
+    books = Book.objects.all()  # Fetch all book records from the database
+    return render(request, 'bookshelf/book_list.html', {'books': books})
