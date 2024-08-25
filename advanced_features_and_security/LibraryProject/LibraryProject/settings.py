@@ -61,6 +61,10 @@ CSP_DEFAULT_SRC = ("'self'",)
 CSP_SCRIPT_SRC = ("'self'", "https://trustedscripts.example.com")
 CSP_IMG_SRC = ("'self'", "https://trustedimages.example.com")
 
+X_FRAME_OPTIONS = False
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
