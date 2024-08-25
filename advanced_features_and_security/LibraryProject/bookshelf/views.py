@@ -44,15 +44,17 @@ def book_list(request):
 
 # LibraryProject/bookshelf/views.py
 
-from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm
+from django.shortcuts import render
+from .forms import ExampleForm
 
-def register(request):
+def example_view(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST, request.FILES)
+        form = ExampleForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')
+            # Handle the form data
+            print(form.cleaned_data)
+            return redirect('some_success_page')
     else:
-        form = CustomUserCreationForm()
-    return render(request, 'bookshelf/register.html', {'form': form})
+        form = ExampleForm()
+    return render(request, 'bookshelf/example_form.html', {'form': form})
+
