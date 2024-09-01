@@ -4,6 +4,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from .models import Book
 from .serializers import BookSerializer
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 class BookListAPIView(generics.ListAPIView):
     queryset = Book.objects.all()
@@ -55,3 +56,17 @@ class BookViewSet(viewsets.ModelViewSet):
         book = get_object_or_404(Book, pk=pk)
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+class AdminBookViewSet(viewsets.MoelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAdminUser]
