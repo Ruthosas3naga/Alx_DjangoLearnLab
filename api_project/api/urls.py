@@ -7,5 +7,6 @@ router.register(r'my-books', BookListAPIView)
 
 urlpatterns = [
     path("api/books", BookListAPIView.as_view(), name="book_list_create"),
+    path('api/', include(router.urls)),
 ]
 
