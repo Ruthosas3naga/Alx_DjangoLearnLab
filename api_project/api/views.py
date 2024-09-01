@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, viewsets, status
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from .models import Book
 from .serializers import BookSerializer
@@ -15,7 +16,7 @@ class BookListAPIView(generics.ListAPIView):
             queryset = queryset.filter(name__icontains=book_filter)
         return queryset
 
-class BookViewSet(viewsets.ViewSet):
+class BookViewSet(viewsets.ModelViewSet):
     
     # Retrieve a single book by ID
     def retrieve(self, request, pk=None):
