@@ -4,7 +4,7 @@ from models import Book, Author
 from serializers import BookSerializer, AuthorSerializer
 
 # Create your views here.
-class BookCreate(generics.CreateAPIView):
+class CreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [permissions.IsAuthenticated]
