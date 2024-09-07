@@ -3,7 +3,7 @@ from rest_framework import serializers
 import datetime
 from rest_framework.serializers import ModelSerializer 
 
-class BookSerializers(serializers.ModelSerializer):
+class BookSerializer(serializers.ModelSerializer):
     class meta:
        model = Book
        fields = '__all__'
@@ -15,8 +15,8 @@ class BookSerializers(serializers.ModelSerializer):
         return value
 
 #This is to create a nested serializer by calling the BookSeria;ization. This simply means we what to make use of the fields in the BookSerializer
-class AuthorSerializers(serializers.ModelSerializer):
-    books = BookSerializers(many=True, read_only=True)
+class AuthorSerializer(serializers.ModelSerializer):
+    books = BookSerializer(many=True, read_only=True)
 
     class meta:
         model = Author
