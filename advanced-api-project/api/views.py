@@ -13,11 +13,11 @@ class CreateView(generics.CreateAPIView):
         serializer.save()
 
 
-class BookList(generics.ListAPIView):
+class ListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-class BookUpdate(generics.UpdateAPIView):
+class UpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -26,11 +26,11 @@ class BookUpdate(generics.UpdateAPIView):
         serializer.save()
 
 
-class BookDelete(generics.DestroyAPIView):
+class DeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-class BookDetail(generics.RetrieveAPIView):
+class DetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
