@@ -136,5 +136,9 @@ REST_FRAMEWORK = {
     # Optionally, you can add permissions settings:
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+
     ],
+
+    'DEFAULT_FILTER_BACKENDS': 
+    ['django_filters.rest_framework.DjangoFilterBackend'],
 }
