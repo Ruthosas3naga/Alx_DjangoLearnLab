@@ -5,7 +5,9 @@ from rest_framework.response import Response
 from .models import Book
 from .serializers import BookSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from django_filters import rest_framework as filters
+from django_filters import rest_framework 
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 
@@ -75,35 +77,15 @@ class AdminBookViewSet(viewsets.MoelViewSet):
     permission_classes = [IsAdminUser]
 
 
-class BookFilter(filters.FilterSet):
-    class Meta:
-        model = Book
-        fields = {
-            'title': ['exact', 'icontains'],  # Filter by exact match or case-insensitive contains
-            'author__name': ['exact'],        # Filter by exact author name
-            'publication_year': ['exact', 'gte', 'lte'],  # Filter by year or range
-        }
 
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filter_backends = [filters.DjangoFilterBackend]
-
-from rest_framework import filters as drf_filters
-
-class BookListView(generics.ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    filter_backends = [filters.DjangoFilterBackend, drf_filters.SearchFilter]
-    filterset_class = BookFilter
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['title', 'author__name']  # Allow searching by title and author's name
 
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filter_backends = [filters.DjangoFilterBackend, drf_filters.SearchFilter, drf_filters.OrderingFilter]
-    filterset_class = BookFilter
-    search_fields = ['title', 'author__name']
-    ordering_fields = ['title', 'publication_year']  # Allow ordering by title and publication year
-    ordering = ['title']  # Default ordering by title
-
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    ordering = ['title']  
