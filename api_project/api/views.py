@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from .models import Book
 from .serializers import BookSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import rest_framework 
 from rest_framework.filters import OrderingFilter, SearchFilter
 
 
@@ -78,7 +78,7 @@ class AdminBookViewSet(viewsets.MoelViewSet):
 class BookList(generics.ListAPIView):
     serializer_class = BookSerializer
 
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filter_backends = [filter.DjangoFilterBackend, SearchFilter, OrderingFilter]
     
     
     filterset_fields = ['title', 'author__name', 'publication_year']
