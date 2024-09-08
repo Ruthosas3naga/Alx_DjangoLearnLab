@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Book, Author
-from .serializers import BookSerializer, AuthorSerializer
+from api.models import Book, Author
+from api.serializers import BookSerializer, AuthorSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser
 from rest_framework import generics
