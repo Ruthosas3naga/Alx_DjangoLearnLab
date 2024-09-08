@@ -11,12 +11,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 
-class BookListView(generics.ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['title', 'author__name', 'publication_year']
-
 
 
 class BookListAPIView(generics.ListAPIView):
@@ -86,14 +80,15 @@ class AdminBookViewSet(viewsets.MoelViewSet):
 
 
 
-class BookListView(generics.ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    search_fields = ['title', 'author__name']  # Allow searching by title and author's name
+from rest_framework import generics, filters
+from .models import Book
+from .serializers import BookSerializer
 
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    ordering = ['title']  
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['title', 'author__name']  # Allow searching by title and author's name
+    ordering_fields = ['title', 'publication_year']  # Allow ordering by title and publication year
+    ordering = ['title']  # Default ordering
+
