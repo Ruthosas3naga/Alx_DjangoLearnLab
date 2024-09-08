@@ -5,6 +5,10 @@ from rest_framework.response import Response
 from .models import Book
 from .serializers import BookSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter, SearchFilter
+
+
 
 class BookListAPIView(generics.ListAPIView):
     queryset = Book.objects.all()
