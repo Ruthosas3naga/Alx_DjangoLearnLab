@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, viewsets, status
+from rest_framework import generics, viewsets, status, filters
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from .models import Book
@@ -70,3 +70,17 @@ class AdminBookViewSet(viewsets.MoelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAdminUser]
+
+class BookList(generics.ListAPIView):
+    serializer_class = BookSerializer
+
+    filter_backends = [filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    
+    
+    filterset_fields = ['title', 'author__name', 'publication_year']
+    
+    
+    search_fields = ['title', 'author__name']
+    
+    
+    ordering_fields = ['title', 'publication_year']
