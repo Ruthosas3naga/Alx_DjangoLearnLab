@@ -1,14 +1,11 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, viewsets, status, filters
-from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from .models import Book
 from .serializers import BookSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from django_filters import rest_framework 
-from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework.pagination import PageNumberPagination
 
 
 class BookListAPIView(generics.ListAPIView):
@@ -22,15 +19,26 @@ class BookListAPIView(generics.ListAPIView):
             queryset = queryset.filter(name__icontains=book_filter)
         return queryset
 
+
 class BookViewSet(viewsets.ModelViewSet):
-    
-    # Retrieve a single book by ID
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['title', 'author__name', 'publication_year']
+    search_fields = ['title', 'author__name']
+    ordering_fields = ['title', 'publication_year']
+    ordering = ['title']
+    pagination_class = PageNumberPagination
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
     def retrieve(self, request, pk=None):
         book = get_object_or_404(Book, pk=pk)
         serializer = BookSerializer(book)
         return Response(serializer.data)
 
-    # Create a new book
     def create(self, request):
         serializer = BookSerializer(data=request.data)
         if serializer.is_valid():
@@ -38,7 +46,6 @@ class BookViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # Update an existing book by ID
     def update(self, request, pk=None):
         book = get_object_or_404(Book, pk=pk)
         serializer = BookSerializer(book, data=request.data)
@@ -47,7 +54,6 @@ class BookViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # Partially update an existing book by ID
     def partial_update(self, request, pk=None):
         book = get_object_or_404(Book, pk=pk)
         serializer = BookSerializer(book, data=request.data, partial=True)
@@ -56,45 +62,24 @@ class BookViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # Delete an existing book by ID
     def destroy(self, request, pk=None):
         book = get_object_or_404(Book, pk=pk)
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
 
-class BookViewSet(viewsets.ModelViewSet):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-class AdminBookViewSet(viewsets.MoelViewSet):
+class AdminBookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAdminUser]
 
 
-
-from django_filters import rest_framework 
-from rest_framework import filters
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics
-from rest_framework import filters
-from .models import Book
-from .serializers import BookSerializer
-from rest_framework.pagination import PageNumberPagination
-
-class ListView(generics.ListAPIView):
+class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filter_backends = [rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filter_set_fields = ['title', 'author__name', 'publication_year' ]
-    search_fields = ['title', 'author__name']  # Allow searching by title and author's name
-    ordering_fields = ['title', 'publication_year']  # Allow ordering by title and publication year
-    ordering = ['title']  
-
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['title', 'author__name', 'publication_year']
+    search_fields = ['title', 'author__name']
+    ordering_fields = ['title', 'publication_year']
+    ordering = ['title']
     pagination_class = PageNumberPagination
-
