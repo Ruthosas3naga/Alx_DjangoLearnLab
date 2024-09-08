@@ -78,7 +78,7 @@ class AdminBookViewSet(viewsets.MoelViewSet):
 class BookList(generics.ListAPIView):
     serializer_class = BookSerializer
 
-    filter_backends = [filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     
     
     filterset_fields = ['title', 'author__name', 'publication_year']
