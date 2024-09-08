@@ -78,7 +78,12 @@ class AdminBookViewSet(viewsets.MoelViewSet):
 
 
 
-
+from django_filters import rest_framework 
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
+from .models import Book
+from .serializers import BookSerializer
+from rest_framework.pagination import PageNumberPagination
 
 class ListView(generics.ListAPIView):
     queryset = Book.objects.all()
@@ -88,4 +93,6 @@ class ListView(generics.ListAPIView):
     search_fields = ['title', 'author__name']  # Allow searching by title and author's name
     ordering_fields = ['title', 'publication_year']  # Allow ordering by title and publication year
     ordering = ['title']  
+
+    pagination_class = PageNumberPagination
 
