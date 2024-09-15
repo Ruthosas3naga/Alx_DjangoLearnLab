@@ -21,19 +21,7 @@ class CommentForm(forms.ModelForm):
         super(CommentForm, self).__init__(*args, **kwargs)
         self.fields['content'].widget.attrs.update({'placeholder': 'Enter your comment here'})
 
- # Import TagField and TagWidget
-
-
 class PostForm(forms.ModelForm):
-    # Use TagField with TagWidget to manage tags
-    tags = TagField(
-        required=False,
-        widget=TagWidget(attrs={
-            'placeholder': 'Add tags separated by commas',
-            'class': 'form-control',
-        })
-    )
-
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']  # Include tags in the form
@@ -46,5 +34,10 @@ class PostForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Write the post content here...'
             }),
+            'tags': TagWidget(attrs={
+                'placeholder': 'Add tags separated by commas',
+                'class': 'form-control',
+            }),  # Define TagWidget for 'tags'
         }
 
+ 
