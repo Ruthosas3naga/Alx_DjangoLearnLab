@@ -26,10 +26,13 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['title', 'content', 'tags']  # Include the tags field
         widgets = {
+            'tags':TagWidget(),
+
             'title': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Enter the title of the post'
             }),
+            
             'content': forms.Textarea(attrs={
                 'class': 'form-control',
                 'placeholder': 'Write the post content here...'
