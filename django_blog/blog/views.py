@@ -13,6 +13,11 @@ from .forms import CommentForm
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.db.models import Q
+from taggit.models import Tag
+
+
+
 
 
 
@@ -93,10 +98,6 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         post = self.get_object()
         return self.request.user == post.author
 
-
-
-
-
 # Create Comment View
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
@@ -142,3 +143,24 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
+
+def search_posts(request):
+    query = request.GET.get('q', '')
+    posts = Post.objects.all()
+
+    if query:
+        posts = posts.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)  # Search in tags as well
+        ).distinct()
+
+    return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
+
+class PostsByTagView(ListView):
+    model = Post
+    template_name = 'blog/posts_by_tag.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.filter(tags__slug=self.kwargs['tag'])
