@@ -22,6 +22,7 @@ class CommentForm(forms.ModelForm):
 
  # Import TagField and TagWidget
 
+
 class PostForm(forms.ModelForm):
     # Use TagField with TagWidget to manage tags
     tags = TagField(
@@ -45,3 +46,4 @@ class PostForm(forms.ModelForm):
                 'placeholder': 'Write the post content here...'
             }),
         }
+
