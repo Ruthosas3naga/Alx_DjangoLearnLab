@@ -2,7 +2,8 @@ from django import forms
 from .models import Comment, Post
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from taggit.forms import TagField, TagWidget 
+from taggit.forms import TagWidget 
+from taggit.forms import TagField 
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
