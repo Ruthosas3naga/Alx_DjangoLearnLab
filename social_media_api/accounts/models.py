@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class CustomUser(AbstractUser):
-    bio = models.CharField(max_length=100)
+    bio = models.TextField(max_length=100)
     profile_picture = models.ImageField(upload_to='profile/pics', blank=True, null=True)
     followers = models.ManyToManyField('self', symmetrical=False, related_name='following')
 
