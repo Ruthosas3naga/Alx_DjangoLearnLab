@@ -3,10 +3,10 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 
 CustomUser = get_user_model()
+username = serializers.CharField(max_length=255)
 
 class RegisterSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(max_length=255)  # Explicitly declaring CharField for username
-    password = serializers.CharField(write_only=True)  # Password is write-only
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = CustomUser
