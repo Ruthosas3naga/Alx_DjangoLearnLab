@@ -9,6 +9,7 @@ from rest_framework import permissions
 from .models import Post, Like
 from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType
+from django.shortcuts import get_object_or_404
 
 class PostViewSet(viewsets.ModelViewSet):
     """
@@ -55,14 +56,13 @@ class LikePostView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
+        post = get_object_or_404(Post, pk=pk)
 
-        # Check if the user has already liked the post
-        if Like.objects.filter(user=request.user, post=post).exists():
+        # Get or create a like
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+
+        if not created:
             return Response({"detail": "You have already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Create a new like
-        like = Like.objects.create(user=request.user, post=post)
 
         # Create a notification
         Notification.objects.create(
@@ -75,12 +75,11 @@ class LikePostView(APIView):
 
         return Response({"detail": "Post liked successfully."}, status=status.HTTP_201_CREATED)
 
-
 class UnlikePostView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.get(pk=pk)
+        post = get_object_or_404(Post, pk=pk)
 
         # Find the like to delete
         try:
@@ -89,7 +88,3 @@ class UnlikePostView(APIView):
             return Response({"detail": "Post unliked successfully."}, status=status.HTTP_204_NO_CONTENT)
         except Like.DoesNotExist:
             return Response({"detail": "You have not liked this post."}, status=status.HTTP_400_BAD_REQUEST)
-
-    
-        
-       
