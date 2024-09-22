@@ -3,7 +3,7 @@ from rest_framework import generics, status
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions  # Changed this line
 from django.contrib.auth import authenticate, get_user_model
 from .serializers import RegisterSerializer
 
@@ -24,7 +24,7 @@ class LoginView(generics.GenericAPIView):
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
 class FollowUserView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]  # Changed this line
 
     def post(self, request, pk):
         user_to_follow = get_object_or_404(CustomUser, pk=pk)
@@ -34,7 +34,7 @@ class FollowUserView(APIView):
         return Response({'error': 'You cannot follow yourself.'}, status=status.HTTP_400_BAD_REQUEST)
 
 class UnfollowUserView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]  # Changed this line
 
     def post(self, request, pk):
         user_to_unfollow = get_object_or_404(CustomUser, pk=pk)
