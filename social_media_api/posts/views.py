@@ -1,4 +1,6 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status, generics
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
@@ -29,8 +31,12 @@ class CommentViewSet(viewsets.ModelViewSet):
         # Assign the author as the logged-in user
         serializer.save(author=self.request.user)
 
-    
-
-
 
 # Create your views here.
+class FeedView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Get posts from users the current user follows, ordered by creation date
+        return Post.objects.filter(author__in=self.request.user.following.all()).order_by('-created_at')
