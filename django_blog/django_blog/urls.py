@@ -17,8 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LogoutView
+from blog.views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView
+from blog.views import CommentCreateView, CommentUpdateView, CommentDeleteView, search_posts, PostByTagListView, RegisterView, ProfileView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('register/', RegisterView.as_view(), name='register'),
 ]
+    # Other paths...
+
+

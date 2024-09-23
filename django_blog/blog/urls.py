@@ -1,13 +1,13 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from blog.views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView
-from .views import CommentCreateView, CommentUpdateView, CommentDeleteView, search_posts, PostByTagListView
+from .views import CommentCreateView, CommentUpdateView, CommentDeleteView, search_posts, PostByTagListView, RegisterView, ProfileView 
 
 urlpatterns = [
     path('login/', auth_views.LoginView.auth_view(), name='login'),
     path('logout/', auth_views.LogoutView.auth_view(), name='logout'),
-    path('register/', auth_views.register.as_view(), name='register'),
-    path('profile/', auth_views.profile.as_view(), name='profile'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('profile/', ProfileView.as_view(), name='profile'),
     path('', PostListView.as_view(), name='post-list'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('post/new/', PostCreateView.as_view(), name='post-create'),
